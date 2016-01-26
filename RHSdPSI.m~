@@ -1,0 +1,13 @@
+function [ dPSI_dt ] = RHSdPSI(PSI,k,g)
+
+
+
+BhatPSI = g*(abs(PSI).^2) .* PSI ; 
+
+AhatPSI = 1/2 * ifftn(k.^2 .* fftn(PSI)); 
+
+dPSI_dt = -1i*(AhatPSI + BhatPSI);
+
+
+end
+

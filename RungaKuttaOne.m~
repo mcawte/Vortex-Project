@@ -1,0 +1,27 @@
+function [ ynext ] = RungaKuttaOne(PSI,k,g,DeltaT)
+% First attempt at Runga Kutta Method
+
+
+k1 = RHSdPSI(PSI,k,g,DeltaT);
+
+k2 = RHSdPSI(PSI + DeltaT/2 .* k1,k,g,DeltaT); 
+
+k3 = RHSdPSI(PSI + DeltaT/2 .* k2,k,g,DeltaT); 
+
+k4 = RHSdPSI(PSI + DeltaT/2 .* k2,k,g,DeltaT); 
+
+
+ynext = yn + DeltaT/6 * (k1 + 2*k2 + 2*k3 + k4);
+
+
+
+end
+
+% 
+% Baker_Hausdorff_Oh(PSI,k,g,DeltaT) 
+% 
+% BhatPSI = exp(-i*2*g*abs(PSI).^2 * DeltaT) .* PSI ;
+% 
+% phi = exp( -i .* k.^2 * DeltaT) .* fft(BhatPSI);
+% 
+% PSIn = ifft(phi);
