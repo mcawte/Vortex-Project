@@ -1,8 +1,8 @@
 % 2D GPE Ground State Creator. This evolves the ground state density with 
 % no phase space imprinting. The initial guess for the ground state wave
-% function posits that the Kinetic energy term in the GPE is much less
-% than the Potential energy term, so it throws it away. This is a good
-% approximation, but it is incorrect.
+% function is the Thomas Fermi approximation. This posits that the Kinetic 
+% energy term in the GPE is much less than the Potential energy term, so 
+% it throws it away. This is a good approximation, but it is incorrect.
 
 % Thomas Fermi starts with [KE + PE]PSI = mu PSI. We are left with PE PSI =
 % mu PSI, where PE = V + g|PSI|^2. Getting rid of PSI on both sides leaves
@@ -14,8 +14,8 @@
 % entire wavefunction does not disappear. What is left is only the ground
 % state mode.
 
-% Each time this ground state is passed to the stationary solution of the
-% GPE, the GPE will return the same state times an eigenvalue. 
+% Each time this ground state is passed to the stationary GPE, the GPE
+% will return the same state times an eigenvalue. 
 
  clear all
  close
