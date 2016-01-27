@@ -1,5 +1,22 @@
 % 2D GPE Ground State Creator. This evolves the ground state density with 
-% no phase space imprinting.
+% no phase space imprinting. The initial guess for the ground state wave
+% function posits that the Kinetic energy term in the GPE is much less
+% than the Potential energy term, so it throws it away. This is a good
+% approximation, but it is incorrect.
+
+% Thomas Fermi starts with [KE + PE]PSI = mu PSI. We are left with PE PSI =
+% mu PSI, where PE = V + g|PSI|^2. Getting rid of PSI on both sides leaves
+% V + g|PSI|^2 = mu. Rearranging gives PSI = sqrt((mu-V)/g).
+
+% This routine starts with that guess, and then evolves it with t = -i*t so
+% that all the modes that make up PSI decay, but the ground state decays 
+% the slowest. At each step, the number density is restored so that the 
+% entire wavefunction does not disappear. What is left is only the ground
+% state mode.
+
+% Each time this ground state is passed to the stationary solution of the
+% GPE, the GPE will return the same state times an eigenvalue. 
+
  clear all
  close
  clc
@@ -7,7 +24,7 @@
 
 % Real space configuration
 
-Points = 10;
+Points = 300;
 Range = 150;
 DeltaX = Range/Points;
 x = linspace(-Range/2,Range/2 - DeltaX,Points);
@@ -47,27 +64,25 @@ InitialNatoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
 
 for ii = 1:Steps;
  
-% The third oder Baker Hausdorff with -iTime is called   
+% The 2D third oder Baker Hausdorff with t set to -i*t is called   
  PSI = Baker_Hausdorff_Oh3_iTime(PSI,k,g,V,DeltaT);
  
-% PSI is renormalized to keep the right number density in order to get 
-% the right ground state.
+% PSI is now renormalized to keep the right number density correct so that
+% the whole thing does not decay away entirely.
   
 Natoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
 PSI = (sqrt(InitialNatoms)/sqrt(Natoms)) .* PSI;
 
-% Save and Plotting code
+% Save Data and Plotting code
  if floor(ii/1000) == ii/1000
      save(['./Data/' num2str(ii/1000) '.mat'],'PSI')
 
-    subplot(131)
     imagesc(x,x,abs(PSI).^2);
     set(gca,'ydir','normal')
     title('Density')
-    subplot(132)
-    imagesc(x,x,angle(PSI))
-    title('Phase')
-    set(gca,'ydir','normal')
+   
+    
+    
     drawnow
     pause(0.01);
 
