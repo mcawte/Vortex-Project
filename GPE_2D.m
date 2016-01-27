@@ -35,7 +35,7 @@ k = fftshift(k);
 
 % Order Parameter configuration
 
-%Bright
+% Bright Soliton
 N = 1;
 n = 100;
 Kv = 2*pi/Range *n;
@@ -43,7 +43,7 @@ PSI = N .* sech(X) .*exp(1i.*Kv.*X);
 g = -1;
 
 
-%Dark
+% Dark Soliton
 g = 1;
 PSI =  N*tanh(X).*N*tanh(X-10);%.*exp(1i.*Kv.*X);
 
@@ -66,8 +66,8 @@ PSI = Ground_state.PSI .*exp(1i*phase);
 
 
 
-
 % Loop to solve dynamics and plot the solution
+
 for ii = 1:Steps;
     
 
@@ -89,8 +89,8 @@ for ii = 1:Steps;
 
 %Solutions(ii,:) = PSI(:,:);
 
-% 
-% %Plotting code
+
+%Plotting code
  if floor(ii/1000) == ii/1000
      save(['./Data/' num2str(ii/1000) '.mat'],'PSI')
 
