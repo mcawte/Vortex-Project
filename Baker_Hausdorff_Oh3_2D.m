@@ -1,12 +1,15 @@
 function PSI = Baker_Hausdorff_Oh3_2D(PSI,k,g,V,DeltaT)
-% Third order symmetry Baker Hausdorff Method for 2D GPE
+% Third order Baker Hausdorff Method for 2D GPE
 
-% This goes like N/2 D N/2
+% This goes like N/2 > D > N/2 > PSI
 
-%This function splits up the time evolution of PSI. The time evolution
-%equation is i hbar dPSI/dt = L PSI, where L = Dhat + Nhat. This method is
-%a 3rd order method, and so it operates Nhat/2 on PSI first, then Dhat on
-%the result, then Nhat/2 on PSI again for the final result.
+% This function splits up the time evolution of PSI. The time evolution
+% equation is i hbar dPSI/dt = L PSI, where L = Dhat + Nhat. The Dhat part
+% corresponds to the -hbar^2/2m del^2 term and the Nhat part to the g * 
+% |PSI|^2 terms. 
+
+% This method is a 3rd order method, and so it operates Nhat/2 on PSI first,
+% then Dhat on the result, then Nhat/2 on PSI again for the final result.
 
 % First Nhat/2 is operated on PSI.
 PSI = exp(-1i*(g*2*abs(PSI).^2 + V -2) * DeltaT/2) .* PSI ;
@@ -17,7 +20,7 @@ PSI = exp(-1i*(g*2*abs(PSI).^2 + V -2) * DeltaT/2) .* PSI ;
 % needs to be fourier transformed back to real space.
 PSI = ifft2(exp( -1i .* k.^2 * DeltaT) .* fft2(PSI));
 
-% Now Nhat/2 is applied again.
+% Now Nhat/2 is applied again and the result is returned.
 
 PSI = exp(-1i*(g*2*abs(PSI).^2 + V -2) * DeltaT/2) .* PSI;
 
