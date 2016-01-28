@@ -35,7 +35,7 @@ x = linspace(-Range/2,Range/2 - DeltaX,Points);
 
 r2 = X.^2 + Y.^2;
 Thomas_Fermi = 20; % This number is an educated guess
-V = 1/2 * r2 / Thomas_Fermi^2; 
+Vtrap = 1/2 * r2 / Thomas_Fermi^2; 
 
 % Time step configuration
 DeltaT = 0.001;
@@ -50,6 +50,15 @@ k = (-kmax/2:dk:kmax/2 -dk);
 [Kx,Ky] = meshgrid(k,k);
 k = sqrt(Kx.^2 + Ky.^2);
 k = fftshift(k);
+ksquareon2 = k.^2 /2;
+
+% Stirring configuration
+
+GaussianHalfWidth = 1;
+Vstir = 3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2);
+
+V = Vtrap + Vstir;
+
 
 % Order Parameter configuration
 
@@ -65,7 +74,7 @@ InitialNatoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
 for ii = 1:Steps;
  
 % The 2D third oder Baker Hausdorff with t set to -i*t is called   
- PSI = Baker_Hausdorff_Oh3_iTime(PSI,k,g,V,DeltaT);
+ PSI = Baker_Hausdorff_Oh3_iTime(PSI,ksquareon2,g,V,DeltaT);
  
 % PSI is now renormalized to keep the right number density correct so that
 % the whole thing does not decay away entirely.

@@ -17,7 +17,7 @@ x = linspace(-Range/2,Range/2 - DeltaX,Points);
 
 r2 = X.^2 + Y.^2;
 Thomas_Fermi = 20; % This number is an educated guess
-V = 1/2 * r2 / Thomas_Fermi^2; 
+Vtrap = 1/2 * r2 / Thomas_Fermi^2; 
 
 % Time step configuration
 DeltaT = 0.001;
@@ -32,6 +32,16 @@ k = (-kmax/2:dk:kmax/2 -dk);
 [Kx,Ky] = meshgrid(k,k);
 k = sqrt(Kx.^2 + Ky.^2);
 k = fftshift(k);
+ksquareon2 = k.^2 /2;
+
+% Stirring configuration
+
+GaussianHalfWidth = 2;
+Vstir = 3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2);
+
+V = Vtrap + Vstir;
+velocity = 1;
+CurrentTime = 0;
 
 % Order Parameter configuration
 
@@ -55,9 +65,9 @@ density = 2 - V;
 
 PSI = real(sqrt(density)); %.*exp(1i*phase);
 
-Ground_state = load('./Data/Ground_state');
+Ground_state = load('Data/Stirring_Ground_State');
 
-PSI = Ground_state.PSI .*exp(1i*phase);
+PSI = Ground_state.PSI;% .*exp(1i*phase);
 
 %InitialNatoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
 
@@ -72,7 +82,7 @@ for ii = 1:Steps;
     
 
 % This uses the third oder Baker Hausdorff    
- PSI = Baker_Hausdorff_Oh3_2D(PSI,k,g,V,DeltaT);
+ PSI = Baker_Hausdorff_Oh3_2D(PSI,ksquareon2,g,V,DeltaT);
  
 % This uses the third oder Baker Hausdorff with -iTime   
 % PSI = Baker_Hausdorff_Oh3_iTime(PSI,k,g,V,DeltaT);
@@ -89,6 +99,13 @@ for ii = 1:Steps;
 
 %Solutions(ii,:) = PSI(:,:);
 
+% Update the stirrer
+
+CurrentTime = CurrentTime + DeltaT;
+Vstir = 3*exp(-((X -8*cos((velocity*CurrentTime)/8)).^2 + ...
+    (Y - 8*sin((velocity*CurrentTime)/8)).^2)/ GaussianHalfWidth^2);
+
+V = Vtrap + Vstir;
 
 %Plotting code
  if floor(ii/1000) == ii/1000
@@ -103,11 +120,11 @@ for ii = 1:Steps;
 % drawnow;
 % pause(0.001)
 % % pause
-subplot(131)
+subplot(121)
 imagesc(x,x,abs(PSI).^2);
 set(gca,'ydir','normal')
 title('Density')
-subplot(132)
+subplot(122)
 imagesc(x,x,angle(PSI))
 title('Phase')
 set(gca,'ydir','normal')
