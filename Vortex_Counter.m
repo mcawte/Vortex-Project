@@ -6,17 +6,37 @@
  close
  clc
  
- PSI = load('Data/34');
+ Stirred_Vortices_84 = load('Data/Stirred_Vortices_84');
  
- PSI = PSI.PSI;
+ PSI = Stirred_Vortices_84.PSI;
  
- [X,Y] = size(PSI)
+ [X,Y] = size(PSI);
  
- PSI(1,1)
- PSI(1,2)
- PSI(2,2)
- PSI(2,1)
+Grid = zeros(X,Y);
+
  
+ TotalWind = 2*pi;
  
- 
- 
+ for ii = 2:X-2
+    
+   for jj = 2:Y-2
+      
+       Wind = (imag(PSI(ii-1,jj-1))) + (imag(PSI(ii-1,jj))) + ...
+           (imag(PSI(ii-1,jj+1))) + (imag(PSI(ii+1,jj+1))) + ...
+           (imag(PSI(ii+1,jj+1))) + (imag(PSI(ii+1,jj))) + ...
+           (imag(PSI(ii+1,jj-1))) + (imag(PSI(ii,jj-1)));
+       
+       if 2*pi < Wind
+        
+           Grid(ii,jj) = 1;
+           
+       end
+       
+       
+   end
+     
+     
+ end
+
+ figure
+ imagesc(X,Y,Grid)
