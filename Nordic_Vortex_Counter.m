@@ -33,7 +33,8 @@ Ky = fftshift(Ky);
 % Perhaps use fourier diff
 
 
-% real space version, doesn't work correctly
+% real space version, doesn't work correctly, Try append on first
+% column/row to last for x and y to get matrices the right dimensions
 % dx_conjPSI= diff(conj(PSI),1,2);
 % 
 % dy_PSI = diff(PSI,1,1);
@@ -51,7 +52,7 @@ Vortex_Grid = imag(dx_conjPSI .* dy_PSI);
 Corrected_Grid = Vortex_Grid/(1-Vtrap);
 
 Nordic_Time = toc
-Nordic_cpu = cputime
+%Nordic_cpu = cputime
 
  figure
  imagesc(X,Y,Vortex_Grid)

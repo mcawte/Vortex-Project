@@ -69,7 +69,7 @@ tic
  end
 
  Plaquette_Time = toc
- Plaquette_cpu = cputime
+ %Plaquette_cpu = cputime
 
  figure
  imagesc(X,Y,Vortex_Grid)

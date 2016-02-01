@@ -29,7 +29,7 @@ dVy_dx = diff(diff(Yunwrap,1,1),1,2);
 Vortex_Grid = dVy_dx - dVx_dy;
  
 Otago_Time = toc
-Otago_cpu = cputime
+%Otago_cpu = cputime
 
  figure
  imagesc(X,Y,Vortex_Grid)
