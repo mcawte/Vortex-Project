@@ -71,4 +71,5 @@
 
  figure
  imagesc(X,Y,Vortex_Grid)
+ set(gca,'ydir','normal')
  
