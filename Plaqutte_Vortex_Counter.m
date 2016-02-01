@@ -3,8 +3,8 @@
 % winds by 2pi, there is a vortex there.
 
  clear all
- close
- clc
+% close
+ % clc
  
  Stirred_Vortices_84 = load('Data/Stirred_Vortices_84');
  
@@ -16,7 +16,7 @@
  
  Vortex_Grid = zeros(X,Y);
 
-
+tic
  
  for ii = 1:X-1  
    for jj = 1:Y-1
@@ -68,6 +68,8 @@
    end  
  end
 
+ Plaquette_Time = toc
+ Plaquette_cpu = cputime
 
  figure
  imagesc(X,Y,Vortex_Grid)

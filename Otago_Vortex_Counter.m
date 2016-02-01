@@ -1,7 +1,7 @@
 % Otago Vortex Counter
  clear all
- close
- clc
+ % close
+% clc
  
  Stirred_Vortices_84 = load('Data/Stirred_Vortices_84');
  
@@ -11,7 +11,7 @@
  
  [X,Y] = size(PSI);
  
-
+tic
 % wrap x and y phase, then take x diff and y diff, then curl x and y to
 % find the vortices
 
@@ -28,7 +28,8 @@ dVy_dx = diff(diff(Yunwrap,1,1),1,2);
 
 Vortex_Grid = dVy_dx - dVx_dy;
  
-
+Otago_Time = toc
+Otago_cpu = cputime
 
  figure
  imagesc(X,Y,Vortex_Grid)
