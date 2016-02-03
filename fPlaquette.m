@@ -1,9 +1,9 @@
-function [Plaquette_Time] = fPlaquette(PSI)
+function [Vortex_Grid] = fPlaquette(PSI)
 
 % Plaquette Vortex Counter
 % This needs to calculate the phase around each lattice point. If the phase
 % winds by 2pi, there is a vortex there.
-tstart = tic
+
  
  PhaseofPSI = angle(PSI);
  
@@ -63,7 +63,7 @@ tstart = tic
    end  
  end
 
- Plaquette_Time = toc(tstart);
+ 
  
 
 end

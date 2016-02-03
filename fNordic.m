@@ -1,6 +1,6 @@
-function [ Nordic_Time ] = fNordic(PSI,Kx,Ky,Vtrap)
+function [ Corrected_Grid ] = fNordic(PSI,Kx,Ky,Vtrap)
 
- tstart = tic
+ 
  PhaseofPSI = angle(PSI);
  
  [X,Y] = size(PSI);
@@ -33,7 +33,6 @@ Vortex_Grid = imag(dx_conjPSI .* dy_PSI);
   
 Corrected_Grid = Vortex_Grid/(1-Vtrap);
 
-Nordic_Time = toc(tstart)
 
 
 

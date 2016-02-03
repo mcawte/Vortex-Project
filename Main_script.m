@@ -11,7 +11,7 @@
  
 % Real space configuration
 
-Points = 128;
+Points = 1024;
 Range = 150;
 DeltaX = Range/Points;
 x = linspace(-Range/2,Range/2 - DeltaX,Points);
@@ -63,9 +63,10 @@ Energy = GPE_Energy_2D(PSI,k,g,V,DeltaT);
 [PSI, Energy] = fGround_State_Creator(PSI,ksquareon2,g,V,DeltaT, ...
     InitialNatoms, Points, Energy, DeltaX, k);
 
+TrapEvolTime = ceil((2*pi)/((velocity*DeltaT)/8));
 
 % Stir the pot
-for ii = 1:Steps;
+for ii = 1:TrapEvolTime;
     
 % This uses the third oder Baker Hausdorff    
  PSI = Baker_Hausdorff_Oh3_2D(PSI,ksquareon2,g,V,DeltaT);
@@ -82,13 +83,7 @@ end
 
 save(['./Data/Stirred_grid_' num2str(Points) '.mat'],'PSI');
 
-Plaquette_time = fPlaquette(PSI);
-Nordic_time = fNordic(PSI,Kx,Ky,Vtrap);
-Otago_time = fOtago(PSI);
 
-Counting_Time = [Plaquette_time,Nordic_time,Otago_time]
-
-save(['./Data/Times_Grid_' num2str(Points) '.mat'],'Counting_Time');
 
 
 

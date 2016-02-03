@@ -1,6 +1,6 @@
-function [ Otago_Time ] = fOtago(PSI)
+function [ Vortex_Grid ] = fOtago(PSI)
 
- tstart = tic;
+
  PhaseofPSI = angle(PSI);
  
  [X,Y] = size(PSI);
@@ -22,7 +22,6 @@ dVy_dx = diff(diff(Yunwrap,1,1),1,2);
 
 Vortex_Grid = dVy_dx - dVx_dy;
  
-Otago_Time = toc(tstart);
 
 
 
