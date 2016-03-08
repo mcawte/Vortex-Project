@@ -16,7 +16,7 @@ Plaquette_Vortex_Grid = fPlaquette(PSI);
 Plaquette_time = toc(tstart1);
 
 length = size(PSI);
-Points = length(1)
+Points = length(1);
 Range = 150;
 DeltaX = Range/Points;
 
@@ -27,13 +27,16 @@ dk = (2*pi)/Range;
 kmax = (2*pi)/(DeltaX);
 k = (-kmax/2:dk:kmax/2 -dk);
 [Kx,Ky] = meshgrid(k,k);
+Kx = fftshift(Kx);
+Ky = fftshift(Ky);
+
 
 r2 = X.^2 + Y.^2;
 Thomas_Fermi = 20; % This number is an educated guess
 Vtrap = 1/2 * r2 / Thomas_Fermi^2; 
 
 tstart2 = tic;
-Nordic_Vortex_Grid = fNordic(PSI,Kx,Ky,Vtrap);
+Nordic_Vortex_Grid = fNordic(PSI,Vtrap, Kx, Ky);
 Nordic_time = toc(tstart2);
 
 tstart3 = tic;

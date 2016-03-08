@@ -1,4 +1,6 @@
-% Vortex comparison script
+% Vortex comparison script. This creates a ground state for a given grid
+% size, then stirs the trap to create vortices and saves the result with
+% the grid size appeneded into the /Data directory
 
 
  clear all
@@ -11,7 +13,7 @@
  
 % Real space configuration
 
-Points = 1024;
+Points = 128;
 Range = 150;
 DeltaX = Range/Points;
 x = linspace(-Range/2,Range/2 - DeltaX,Points);

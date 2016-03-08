@@ -12,7 +12,7 @@ x = linspace(-Range/2,Range/2 - DeltaX,Points);
 
 % Time step information
 DeltaT = 0.0001;
-Time = pi;
+Time = 10;
 Steps = Time/DeltaT;
 
 
@@ -25,7 +25,7 @@ k = fftshift(k);
 
 % Soliton set up
 
-N = 1;
+N = 5;
 n = 100;
 Kv = 2*pi/Range *n;
 PSI = N .* sech(x);% .*exp(i.*Kv.*x); 

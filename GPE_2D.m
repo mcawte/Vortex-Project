@@ -6,7 +6,7 @@
 
 % Real space configuration
 
-Points = 300;
+Points = 512;
 Range = 150;
 DeltaX = Range/Points;
 x = linspace(-Range/2,Range/2 - DeltaX,Points);
@@ -37,7 +37,11 @@ ksquareon2 = k.^2 /2;
 % Stirring configuration
 
 GaussianHalfWidth = 2;
-Vstir = 3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2);
+% Vstir = 3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2) ...
+%      + (3*exp(-((X -4).^2 +(Y).^2)/ GaussianHalfWidth^2)) ...
+%     + (3*exp(-((X +6).^2 +(Y).^2)/ GaussianHalfWidth^2));
+
+Vstir = (3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2));
 
 V = Vtrap + Vstir;
 velocity = 1;
@@ -59,13 +63,16 @@ PSI =  N*tanh(X).*N*tanh(X-10);%.*exp(1i.*Kv.*X);
 
 % Phase imprinted vortices using pervious ground state density
 
-phase = atan2(Y-20,X);% -atan2(Y+2,X);
+phase = atan2(Y-20,X);% -atan2(Y+2,X); % Can make circulation more than 1 
+% here by multiplying the atan2 since this is only a phase imprinting. But
+% will phase imprinting work with the Nordic method, since it uses density
+% information?
 
 density = 2 - V;
 
 PSI = real(sqrt(density)); %.*exp(1i*phase);
 
-Ground_state = load('Data/Stirring_Ground_State');
+Ground_state = load('Data/512/One_Stir8.mat');
 
 PSI = Ground_state.PSI;% .*exp(1i*phase);
 
@@ -95,21 +102,28 @@ for ii = 1:Steps;
 
  
 % This uses the First attempt at a Runga Kutta Method, only 1d
- %PSI = RungaKuttaOne(PSI,k,g,DeltaT);
+% PSI = RungaKuttaOne(PSI,k,g,DeltaT);
 
 %Solutions(ii,:) = PSI(:,:);
 
 % Update the stirrer
 
 CurrentTime = CurrentTime + DeltaT;
-Vstir = 3*exp(-((X -8*cos((velocity*CurrentTime)/8)).^2 + ...
-    (Y - 8*sin((velocity*CurrentTime)/8)).^2)/ GaussianHalfWidth^2);
+% Vstir = 3*exp(-((X -8*cos((velocity*CurrentTime)/8)).^2  + ...
+%     (Y - 8*sin((velocity*CurrentTime)/8)).^2)/ GaussianHalfWidth^2) ...
+%     + 3*exp(-((X -4*cos((velocity*CurrentTime)/4)).^2 + ...
+%     (Y - 4*sin((velocity*CurrentTime)/4)).^2)/ GaussianHalfWidth^2) ...
+%     + 3*exp(-((X +6*cos((velocity*-CurrentTime)/6)).^2 + ...
+%     (Y + 6*sin((velocity*-CurrentTime)/6)).^2)/ GaussianHalfWidth^2);
+
+Vstir = 3*exp(-((X -8*cos((velocity*CurrentTime)/8)).^2  + ...
+     (Y - 8*sin((velocity*CurrentTime)/8)).^2)/ GaussianHalfWidth^2);
 
 V = Vtrap + Vstir;
 
 %Plotting code
  if floor(ii/1000) == ii/1000
-     save(['./Data/' num2str(ii/1000) '.mat'],'PSI')
+     save(['./Data/512/' num2str(ii/1000) '.mat'],'PSI')
 
      
 % Natoms = sum(abs(Solutions(ii,:)).^2)*DeltaX;

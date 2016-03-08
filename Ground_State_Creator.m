@@ -20,11 +20,11 @@
  clear all
  close
  clc
- mkdir ./Data;
+ mkdir ./Data/512;
 
 % Real space configuration
 
-Points = 300;
+Points = 512;
 Range = 150;
 DeltaX = Range/Points;
 x = linspace(-Range/2,Range/2 - DeltaX,Points);
@@ -51,11 +51,13 @@ k = (-kmax/2:dk:kmax/2 -dk);
 k = sqrt(Kx.^2 + Ky.^2);
 k = fftshift(k);
 ksquareon2 = k.^2 /2;
+Kx = fftshift(Kx);
+Ky = fftshift(Ky);
 
 % Stirring configuration
 
 GaussianHalfWidth = 1;
-Vstir = 3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2);
+Vstir = (3*exp(-((X -8).^2 +(Y).^2)/ GaussianHalfWidth^2));
 
 V = Vtrap + Vstir;
 
@@ -69,9 +71,32 @@ PSI = real(sqrt(density));
 InitialNatoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
 
 
-% Loop to solve dynamics and plot the solution
 
-for ii = 1:Steps;
+Energy = zeros(1,Steps);
+
+% The 2D third oder Baker Hausdorff with t set to -i*t is called   
+ PSI = Baker_Hausdorff_Oh3_iTime(PSI,ksquareon2,g,V,DeltaT);
+ 
+% PSI is now renormalized to keep the right number density correct so that
+% the whole thing does not decay away entirely.
+  
+Natoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
+PSI = (sqrt(InitialNatoms)/sqrt(Natoms)) .* PSI;
+
+Energy(1,1) = GPE_Energy_2D(PSI,k,g,V,DeltaT);
+
+  
+PSI = Baker_Hausdorff_Oh3_iTime(PSI,ksquareon2,g,V,DeltaT); 
+Natoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
+PSI = (sqrt(InitialNatoms)/sqrt(Natoms)) .* PSI;
+
+Energy(1,2) = GPE_Energy_2D(PSI,k,g,V,DeltaT);
+
+ii = 2;
+
+while Energy(1,ii-1) - Energy(1,ii) > 0.000001;
+    
+    ii = ii + 1;
  
 % The 2D third oder Baker Hausdorff with t set to -i*t is called   
  PSI = Baker_Hausdorff_Oh3_iTime(PSI,ksquareon2,g,V,DeltaT);
@@ -82,23 +107,14 @@ for ii = 1:Steps;
 Natoms = sum(sum(abs(PSI.^2))).*DeltaX.^2;
 PSI = (sqrt(InitialNatoms)/sqrt(Natoms)) .* PSI;
 
-% Save Data and Plotting code
- if floor(ii/1000) == ii/1000
-     save(['./Data/' num2str(ii/1000) '.mat'],'PSI')
-
-    imagesc(x,x,abs(PSI).^2);
-    set(gca,'ydir','normal')
-    title('Density')
-   
-    
-    
-    drawnow
-    pause(0.01);
-
- end
-
-
+Energy(1,ii) = GPE_Energy_2D(PSI,k,g,V,DeltaT);
 end
+
+
+% Save the ground state
+
+save(['./Data/512/One_Stir8.mat'],'PSI')
+
 
 
 

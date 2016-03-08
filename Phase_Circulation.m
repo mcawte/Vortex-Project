@@ -38,7 +38,7 @@ ksquareon2 = k.^2 /2;
 
 % Phase imprinted vortices using pervious ground state density
 
-phase = 2*atan2(Y,X);% -atan2(Y+2,X); % Can make circulation more than 1 
+phase = 1*atan2(Y,X);% -atan2(Y+2,X); % Can make circulation more than 1 
 % here by multiplying the atan2 since this is only a phase imprinting. But
 % will phase imprinting work with the Nordic method, since it uses density
 % information?
@@ -97,8 +97,8 @@ end
 
 %save(['./Data/Ground_state_grid_' num2str(Points) '.mat'],'PSI')
 
-Vortex_Grid = fNordic(PSI,V, Kx, Ky);
-%Vortex_Grid = fOtago(PSI);
+%Vortex_Grid = fNordic(PSI,V, Kx, Ky);
+Vortex_Grid = fOtago(PSI);
 %Vortex_Grid = fPlaquette(PSI);
 
 subplot(2,2,1)

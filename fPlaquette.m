@@ -1,8 +1,9 @@
 function [Vortex_Grid] = fPlaquette(PSI)
 
 % Plaquette Vortex Counter
-% This needs to calculate the phase around each lattice point. If the phase
-% winds by 2pi, there is a vortex there.
+% This method calculates the phase jumps around each grid square. Upon
+% completion, it sums the number of phase jumps to determine if there is a
+% vortex there and it's sign.
 
  
  PhaseofPSI = angle(PSI);
@@ -18,7 +19,6 @@ function [Vortex_Grid] = fPlaquette(PSI)
        
        Alpha1 = PhaseofPSI(ii,jj);
        Beta1 = PhaseofPSI(ii,jj+1);
-       
        m = 0;
        
        if Beta1 - Alpha1 > pi;
@@ -54,17 +54,11 @@ function [Vortex_Grid] = fPlaquette(PSI)
           m = m -1;
        elseif Beta4 - Alpha4 < -pi;
           m = m + 1;
-       end
-       
-       
+         end
        
        Vortex_Grid(ii,jj) = m;
        
    end  
  end
-
- 
- 
-
 end
 

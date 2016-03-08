@@ -1,8 +1,6 @@
 function [GroundPSI, Energy] = fGround_State_Creator(PSI,ksquareon2,g,V,...
     DeltaT,InitialNatoms, Points, Energy1, DeltaX, k)
 
-%UNTITLED5 Summary of this function goes here
-%   Detailed explanation goes here
 
 Energy = zeros(1,Points);
 mkdir ./Data/;
@@ -45,7 +43,7 @@ Energy(1,ii) = GPE_Energy_2D(PSI,k,g,V,DeltaT);
 end
 
 
-save(['./Data/Ground_state_grid_' num2str(Points) '.mat'],'PSI')
+%save(['./Data/Ground_state_grid_' num2str(Points) '.mat'],'PSI')
 
 GroundPSI = PSI;
     

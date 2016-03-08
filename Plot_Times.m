@@ -19,3 +19,6 @@ Otago_time = [y128(3),y256(3),y512(3),y1024(3)];
 plot(log2(xx),Plaquette_time,'r',log2(xx),Nordic_time,'b', ...
     log2(xx),Otago_time,'g')
 legend('Plaquette','Nordic','Otago')
+title('Vortex Detection Time')
+ylabel('Time in Seconds')
+xlabel('Log2 of Grid size')
